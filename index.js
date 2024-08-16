@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
+const jwt=require('jsonwebtoken')
+const cookieParser = require('cookie-parser')
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const port = process.env.PORT || 5000
@@ -17,6 +19,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser())
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.as3doaz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -52,7 +55,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
 
 app.get('/', (req, res) => {
     res.send('running server');
