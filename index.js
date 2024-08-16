@@ -53,6 +53,22 @@ async function run() {
   try {
     const ProductCollection=client.db('ProductStore').collection('StoreProduct')
 
+      // jwt generate
+      app.post('/jwt', async (req, res) => {
+        const email = req.body
+        const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn: '7d',
+        })
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+          })
+          .send({ success: true })
+      }
+    )
+  
+
     app.get('/products',async(req,res)=>{
         const { search = '', sort = 'recent' } = req.query;
             const query = search ? { name: { $regex: search, $options: 'i' } } : {};
