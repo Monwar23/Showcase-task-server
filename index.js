@@ -31,7 +31,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-
     const ProductCollection=client.db('ProductStore').collection('StoreProduct')
 
     app.get('/products',async(req,res)=>{
@@ -56,7 +55,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('running');
+    res.send('running server');
 });
 
 app.listen(port, () => {
