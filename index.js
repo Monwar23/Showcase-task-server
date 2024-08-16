@@ -31,6 +31,17 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+    const ProductCollection=client.db('ProductStore').collection('StoreProduct')
+
+    app.get('/products',async(req,res)=>{
+        const { search = '', sort = 'recent' } = req.query;
+            const query = search ? { name: { $regex: search, $options: 'i' } } : {};
+            const sortOption = sort === 'recent' ? { creation_date: -1 } : { creation_date: 1 };
+            const result = await ProductCollection.find(query).sort(sortOption).toArray();
+            res.send(result);
+    })
+
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     // Send a ping to confirm a successful connection
